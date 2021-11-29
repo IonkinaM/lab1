@@ -1,124 +1,100 @@
+#include <student.hpp>
 
 
-#include <stdexcept>
-
-#include <example.hpp>
-
-
-
-auto get_name(const json& _j) -> std::string 
-{
-    return _j.get<std::string>();
+auto get_name(const json& j) -> std::string {
+    return j.get<std::string>();
 }
 
-auto get_debt(const json& _j) -> std::any {
-    if (_j.is_null())
+auto get_debt(const json& j) -> std::any {
+    if (j.is_null())
         return nullptr;
-    else if (_j.is_string())
-        return _j.get<std::string>();
+    else if (j.is_string())
+        return j.get<std::string>();
     else
-        return _j.get<std::vector<std::string> >();
+        return j.get<std::vector<std::string> >();
 }
 
-auto get_avg(const json& _j) -> std::any {
-    if (_j.is_null())
+auto get_avg(const json& j) -> std::any {
+    if (j.is_null())
         return nullptr;
-    else if (_j.is_string())
-        return _j.get<std::string>();
-    else if (_j.is_number_float())
-        return _j.get<double>();
+    else if (j.is_string())
+        return j.get<std::string>();
+    else if (j.is_number_float())
+        return j.get<double>();
     else
-        return _j.get<std::size_t>();
+        return j.get<std::size_t>();
 }
 
-auto get_group(const json& _j) -> std::any {
-    if (_j.is_string())
-        return _j.get<std::string>();
+auto get_group(const json& j) -> std::any {
+    if (j.is_string())
+        return j.get<std::string>();
     else
-    return _j.get<std::size_t>();
+    return j.get<std::size_t>();
 }
 
-void from_json(const json& _j, Student& _st) {
-    _st.name = get_name(_j.at("name"));
-    _st.group = get_group(_j.at("group"));
-    _st.avg = get_avg(_j.at("avg"));
-    _st.debt = get_debt(_j.at("debt"));
+void from_json(const json& j, Student& s) {
+    s.name = get_name(j.at("name"));
+    s.group = get_group(j.at("group"));
+    s.avg = get_avg(j.at("avg"));
+    s.debt = get_debt(j.at("debt"));
 }
-void print(const Student& _st, std::ostream& os){
-    if (_st.name.empty()){
+void print(const Student& student, std::ostream& os){
+    if (student.name.empty()){
         os << "| null\t|";
     } else {
-        os << "| " << _st.name << "\t|";
+        os << "| " << student.name << "\t|";
     }
 
-    if (_st.group.type() == typeid(std::nullptr_t)){
+    if (student.group.type() == typeid(std::nullptr_t)){
         os << "null|";
-    } else if (_st.group.type() == typeid(std::string)){
-        if (std::any_cast<std::string>(_st.group).length() == 1){
-            os << " " << std::any_cast<std::string>(_st.group) << "\t\t\t|";
+    } else if (student.group.type() == typeid(std::string)){
+        if (std::any_cast<std::string>(student.group).length() == 1){
+            os << " " << std::any_cast<std::string>(student.group) << "\t\t\t|";
         } else {
-            os << " " << std::any_cast<std::string>(_st.group) << "\t|";
+            os << " " << std::any_cast<std::string>(student.group) << "\t|";
         }
     } else {
-        os << " " << std::any_cast<std::size_t>(_st.group)
+        os << " " << std::any_cast<std::size_t>(student.group)
            << " group\t|";
     }
 
-    if (_st.avg.type() == typeid(std::nullptr_t))
-    {
+    if (student.avg.type() == typeid(std::nullptr_t)){
         os << "null\t|";
-    } 
-    else 
-    	if (_st.avg.type() == typeid(std::string))
-    		{
-        		os << " " << std::any_cast<std::string>(_st.avg) << "\t|";
-    		} else 
-    			if (_st.avg.type() == typeid(std::double_t))
-    				{
-        				os << " " << std::any_cast<std::double_t>(_st.avg) << "\t|";
-    				} 
-    					else 
-    						{
-        						os << " " << std::any_cast<std::size_t>(_st.avg) << "\t\t|";
-    						}
+    } else if (student.avg.type() == typeid(std::string)){
+        os << " " << std::any_cast<std::string>(student.avg) << "\t|";
+    } else if (student.avg.type() == typeid(std::double_t)){
+        os << " " << std::any_cast<std::double_t>(student.avg) << "\t|";
+    } else {
+        os << " " << std::any_cast<std::size_t>(student.avg) << "\t\t|";
+    }
 
-    if (_st.debt.type() == typeid(std::nullptr_t))
-    {
+    if (student.debt.type() == typeid(std::nullptr_t)) {
         os << " null\t\t|" << std::endl;
-    } 
-    	else 
-    	if (_st.debt.type() == typeid(std::string)) 
-    		{
-        	os << " " << std::any_cast<std::string>(_st.debt)
+    } else if (student.debt.type() == typeid(std::string)) {
+        os << " " << std::any_cast<std::string>(student.debt)
                 << "\t\t|" <<  std::endl;
-    		} 
-    			else 
-    			{
-        		os
-        		<< " " << std::any_cast<std::vector<std::string>>(_st.debt).size()
-        		<< " items\t|" << std::endl;
-    			}
+    } else {
+        os
+        << " " << std::any_cast<std::vector<std::string>>(student.debt).size()
+        << " items\t|" << std::endl;
+    }
 }
 
-void print(const std::vector<Student>& _st , std::ostream& os) 
-{
+void print(const std::vector<Student>& students, std::ostream& os) {
     os << "| name          | group     | avg   | debt      |\n";
     os << "|---------------|-----------|-------|-----------|\n";
-    for (auto const& student : _st) 
-    {
+    for (auto const& student : students) {
         print(student, os);
         os << "|---------------|-----------|-------|-----------|\n";
     }
 }
 
-std::vector<Student> read_file(json data) 
-{
-    std::vector<Student> _st;
-    for (auto const &item : data.at("items")) 
-    {
+std::vector<Student> read_file(json data) {
+    std::vector<Student> students;
+    for (auto const &item : data.at("items")) {
         Student student;
         from_json(item, student);
-        _st.push_back(student);
+        students.push_back(student);
     }
-    return _st;
+    return students;
 }
