@@ -33,3 +33,4 @@ void print(const std::vector<Student>& students, std::ostream& os);
 void print(const Student& student, std::ostream& os);
 
 #endif // INCLUDE_STUDENT_HPP_
+

@@ -29,7 +29,7 @@ auto get_group(const json& j) -> std::any {
     if (j.is_string())
         return j.get<std::string>();
     else
-    return j.get<std::size_t>();
+        return j.get<std::size_t>();
 }
 
 void from_json(const json& j, Student& s) {
@@ -72,11 +72,11 @@ void print(const Student& student, std::ostream& os){
         os << " null\t\t|" << std::endl;
     } else if (student.debt.type() == typeid(std::string)) {
         os << " " << std::any_cast<std::string>(student.debt)
-                << "\t\t|" <<  std::endl;
+           << "\t\t|" <<  std::endl;
     } else {
         os
-        << " " << std::any_cast<std::vector<std::string>>(student.debt).size()
-        << " items\t|" << std::endl;
+                << " " << std::any_cast<std::vector<std::string>>(student.debt).size()
+                                                               << " items\t|" << std::endl;
     }
 }
 
