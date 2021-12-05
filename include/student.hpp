@@ -1,13 +1,14 @@
 #ifndef INCLUDE_STUDENT_HPP_
 #define INCLUDE_STUDENT_HPP_
-#include <any>
-#include <nlohmann/json.hpp>
+
 #include <fstream>
-#include <vector>
-#include <string>
-#include <sstream>
 #include <iostream>
-#include <gtest/gtest.h>
+#include <string>
+#include <any>
+#include <vector>
+#include <stdexcept>
+#include <nlohmann/json.hpp>
+#include <algorithm>
 
 using nlohmann::json;
 

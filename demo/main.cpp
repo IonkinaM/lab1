@@ -1,29 +1,29 @@
 #include <student.hpp>
+#include "iostream"
+#include "gtest/gtest.h"
 
-int main(int argc, char* argv[]) {
-    std::string jsonPath;
-    if (argc < 2){
-        throw std::runtime_error("Path is not exist");
-    } else {
-        jsonPath = argv[1];
-    }
+int main() {
+  const std::string &jsonPath =
+      "/home/marina/new-git-project/lab-01-parser/files/students.json";
+  if (jsonPath.empty()) throw std::runtime_error{"Empty file path!"};
 
-    std::ifstream file{jsonPath};
-    if (!file) {
-        throw std::runtime_error{"unable to open json: " + jsonPath};
-    }
+  std::ifstream file{jsonPath};
+  if (!file) throw std::runtime_error{"Unable to open json: " + jsonPath};
 
-    json data;
-    file >> data;
+  json data;
+  file >> data;
+  if (!data.at("items").is_array())
+    throw std::runtime_error{"The items in the file must be an array!"};
+  if (data.at("items").size() !=
+      data.at("_meta").at("count").get<size_t>())
+    throw std::runtime_error{"Value in _meta not equal to length of the array"};
 
-    if (data["_meta"]["count"] != data["items"].size()){
-        throw std::runtime_error{"_meta doesn't equal number of students"};
-    }
+  std::vector<student_t> students;
 
-    if (!data["items"].is_array()){
-        throw std::runtime_error{"items is not array"};
-    }
-
-    std::vector<Student> students = read_file(data);
-    print(students, std::cout);
+  for (auto const& item : data.at("items")) {
+    auto student = item.get<student_t>();
+    students.push_back(student);
+  }
+  print(students, std::cout);
+  return 0;
 }
