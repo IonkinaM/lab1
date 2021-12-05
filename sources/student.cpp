@@ -1,3 +1,5 @@
+// Copyright 2021 Pavel <toschakovpv@yandex.ru>
+
 #include <student.hpp>
 
 

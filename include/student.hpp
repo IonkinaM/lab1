@@ -1,14 +1,15 @@
+// Copyright 2020 Your Name <your_email>
+
 #ifndef INCLUDE_STUDENT_HPP_
 #define INCLUDE_STUDENT_HPP_
-
-#include <fstream>
-#include <iostream>
-#include <string>
 #include <any>
-#include <vector>
-#include <stdexcept>
 #include <nlohmann/json.hpp>
-#include <algorithm>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <sstream>
+#include <iostream>
+#include <gtest/gtest.h>
 
 using nlohmann::json;
 
@@ -34,4 +35,3 @@ void print(const std::vector<Student>& students, std::ostream& os);
 void print(const Student& student, std::ostream& os);
 
 #endif // INCLUDE_STUDENT_HPP_
-
